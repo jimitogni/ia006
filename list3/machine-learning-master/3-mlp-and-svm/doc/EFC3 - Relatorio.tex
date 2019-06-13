@@ -1,0 +1,72 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage[portuges]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1.2in]{geometry}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{datetime}
+\usepackage{enumerate}
+\renewcommand{\baselinestretch}{1.5}
+
+\emergencystretch 1pt%
+\setlength{\parindent}{0pt}
+
+\title{EFC3 - MLP e SVM}
+\author{Rafael Gonçalves - RA: 186062}
+
+\begin{document}
+
+
+\maketitle
+
+\section*{Parte I - Retropropagação de erro}
+
+A rede apresentada pode ser descrita como:
+
+\begin{equation}
+    \mathbf{y} = \sum\mathbf{W}\mathbf{F}\left (\sum\mathbf{V}\mathbf{x}\right )
+\end{equation}
+
+em que $\mathbf{y}$ é o vetor de saídas, $\mathbf{x}$ é o vetor de entradas incluindo um valor unitário para facilitar o cálculo do bias, $V$ e $W$ são as matrizes de peso e $\mathbf{F}(\mathbf{x})$ uma matriz diagonal com os únicos elementos não nulos sendo $\mathbf{F_{i,i}}(\mathbf{x}) = f(x_i)$
+
+Podemos definir $\mathbf{u} = \sum\mathbf{Vx}$ e $\mathbf{a} = \mathbf{F}(\mathbf{u})$ para facilitar os cálculos do gradiente.
+
+A função de custo é:
+
+\begin{equation}
+    J = \mathbf{e^Te}
+\end{equation}
+
+Com $\mathbf{e} = {\mathbf{y_{target}} - \mathbf{y}}$, $\mathbf{y}$ sendo o vetor coluna que representa a saída da rede e $\mathbf{y_{target}}$ o vetor coluna com os rótulos.
+
+Então o cálculo do gradiente se dá da seguinte forma:
+
+\[
+    \frac{\partial J}{\partial \mathbf{W}} = \frac{\partial J}{\partial \mathbf{e}}\frac{\partial\mathbf{e}}{\partial\mathbf{y}}\frac{\partial\mathbf{y}}{\partial\mathbf{W}} = 2\mathbf{e}(-1)\mathbf{a} = \boldsymbol{\delta _W} \mathbf{a}
+\]
+
+\[
+    \frac{\partial J}{\partial \mathbf{V}} = \frac{\partial J}{\partial \mathbf{e}}\frac{\partial\mathbf{e}}{\partial\mathbf{y}}\frac{\partial\mathbf{y}}{\partial\mathbf{a}}\frac{\partial\mathbf{a}}{\partial\mathbf{u}}\frac{\partial\mathbf{u}}{\partial\mathbf{V}} = 2\mathbf{e}(-1)\mathbf{W}\mathbf{\dot{F}}(\mathbf{u})\mathbf{x} = \boldsymbol{\delta _V} \mathbf{x}
+\] 
+
+\vspace{1em}
+em que $\dot{\mathbf{F}}_{i,j}(\mathbf{u}) = \dot{f}(u_i)$ se $i = j$ e vale $0$ caso o contrário.
+
+Desta maneira podemos calcular:
+
+\[
+    \frac{\partial J}{\partial v_{21}} = -2e_1w_{20}\dot{f}(u_1 ) x_2
+\]
+
+\vspace{1em}
+em que $u_1 = v_{01} + v_{11}x_1 + v_{12}x_2$ e $e_1 = {y_{target}}_1 - y_1$
+
+\section*{Parte II - Classificação binária com MLPs e SVMs}
+
+\subsection*{Multilayer Perceptrons}
+
+\subsection*{Support-vector Machines}
+
+
+\end{document}
