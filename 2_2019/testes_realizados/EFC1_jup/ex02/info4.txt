@@ -1,6 +1,0 @@
-T_min, T_max  = 1, 101
-folds = 20
-k = 5
-lamb_max = 7
-lamb_ini = 0
-lamb_step = 0.01
